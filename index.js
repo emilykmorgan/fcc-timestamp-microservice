@@ -35,13 +35,24 @@ app.get("/api/:date?", function(req, res) {
   } else {
     let date = new Date(dateParam);
     
-    console.log(dateParam, date);
-    
     // check if date param is a valid date able to be parsed
     if (date == "Invalid Date") {
-      res.json({error: "Invalid Date"});
+      // Check if date param is a UNIX Timestamp
+
+      let dateParamInt = parseInt(dateParam);
+      let dateFromInt = new Date(dateParamInt);
+
+      if (dateFromInt == "Invalid Date") {
+        // unable to get valid date from param
+
+        res.json({error: "Invalid Date"});
+      } else {
+        // date param is a UNIX timestamp, return date info
+        
+        res.json({unix: dateFromInt.valueOf(), utc: dateFromInt.toUTCString()});
+      }
     } else {
-      res.json({unix: date.getDate(), utc: date.toUTCString()});
+      res.json({unix: date.valueOf(), utc: date.toUTCString()});
     }
   }
 });
