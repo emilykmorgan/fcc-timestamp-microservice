@@ -34,12 +34,14 @@ app.get("/api/:date?", function(req, res) {
     res.json({unix: dateNow, utc: new Date(dateNow).toUTCString()});
   } else {
     let date = new Date(dateParam);
-
+    
+    console.log(dateParam, date);
+    
     // check if date param is a valid date able to be parsed
     if (date == "Invalid Date") {
       res.json({error: "Invalid Date"});
     } else {
-      res.json({unix: "tbd", utc: "tbd"});
+      res.json({unix: date.getDate(), utc: date.toUTCString()});
     }
   }
 });
